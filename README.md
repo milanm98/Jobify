@@ -1,2 +1,0 @@
-# Jobify
-MERN course project
