@@ -9,6 +9,7 @@ import {
   getAllJobs,
 } from "../controllers/jobsController.js";
 
+
 router.route("/").post(createJob).get(getAllJobs)
 router.route("/stats").get(showStats)
 
