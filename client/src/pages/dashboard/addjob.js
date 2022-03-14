@@ -1,9 +1,10 @@
-import { FormRow, Alert } from "../../components";
+import { FormRow, FormRowSelect, Alert } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
 const AddJob = () => {
   const {
+    isLoading,
     showAlert,
     displayAlert,
     position,
@@ -11,8 +12,12 @@ const AddJob = () => {
     jobLocation,
     jobType,
     jobTypeOptions,
-    statusOpetions,
+    statusOptions,
     isEditing,
+    status,
+    handleChange,
+    clearValues,
+    createJob,
   } = useAppContext();
 
   const handleSubmit = (e) => {
@@ -21,13 +26,16 @@ const AddJob = () => {
       displayAlert();
       return;
     }
-    console.log("create job");
+    if (isEditing) {
+      return;
+    }
+    createJob();
   };
 
   const handleJobInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(`${name} : ${value}`);
+    handleChange({ name, value });
   };
 
   return (
@@ -55,13 +63,37 @@ const AddJob = () => {
             value={jobLocation}
             handleChange={handleJobInput}
           />
+          <FormRowSelect
+            name="status"
+            value={status}
+            list={statusOptions}
+            handleChange={handleJobInput}
+          />
+          <FormRowSelect
+            labelText="type"
+            name="jobType"
+            value={jobType}
+            list={jobTypeOptions}
+            handleChange={handleJobInput}
+          />
+
           <div className="btn-container">
             <button
               type="submit"
               onClick={handleSubmit}
               className="btn btn-block submit-btn"
+              disabled={isLoading}
             >
               Submit
+            </button>
+            <button
+              className="btn btn-block clear-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                clearValues();
+              }}
+            >
+              clear
             </button>
           </div>
         </div>

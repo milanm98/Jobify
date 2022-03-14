@@ -20,6 +20,8 @@ import authenticateUser from "./middleware/auth.js";
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
+
+app.use(express.urlencoded())
 app.use(express.json());
 
 app.get("/api/v1", (req, res) => {
