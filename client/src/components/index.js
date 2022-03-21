@@ -9,6 +9,10 @@ import SearchContainer from "./searchContainer";
 import JobsContainer from "./jobsContainer";
 import Job from "./job";
 import JobInfo from "./jobInfo";
+import StatsContainer from "./statsContainer";
+import ChartsContainer from "./chartsContainer";
+import Loading from "./loading";
+
 
 export {
   FormRowSelect,
@@ -22,4 +26,7 @@ export {
   JobsContainer,
   JobInfo,
   Job,
+  StatsContainer,
+  ChartsContainer,
+  Loading
 };
