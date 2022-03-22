@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { FaHome } from "react-icons/fa";
 import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
 import Wrapper from "../assets/wrappers/Navbar";
 import { useAppContext } from "../context/appContext";

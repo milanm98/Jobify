@@ -1,5 +1,5 @@
 import React from "react";
-import { useReducer, useContext, useEffect } from "react";
+import { useReducer, useContext } from "react";
 import axios from "axios";
 import {
   DISPLAY_ALERT,
@@ -26,6 +26,8 @@ import {
   EDIT_JOB_ERROR,
   SHOW_STATS_BEGIN,
   SHOW_STATS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE,
 } from "./actions";
 
 import reducer from "./reducers";
@@ -62,10 +64,15 @@ const initialState = {
   numOfPages: 1,
   page: 1,
 
-
   // stats
-  monthlyApplications : [],
-  stats : {}
+  monthlyApplications: [],
+  stats: {},
+
+  search: "",
+  searchStatus: "all",
+  searchType: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "a-z", "z-a"],
 };
 
 const AppContext = React.createContext();
@@ -211,7 +218,12 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    let url = `/jobs`;
+    const { search, searchStatus, searchType, sort, page } = state;
+
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
 
     dispatch({ type: GET_JOBS_BEGIN });
 
@@ -245,7 +257,7 @@ const AppProvider = ({ children }) => {
       getJobs();
     } catch (error) {
       console.log(error.response);
-      // logoutUser()
+       logoutUser()
     }
   };
 
@@ -286,10 +298,18 @@ const AppProvider = ({ children }) => {
       });
     } catch (error) {
       console.log(error.response);
-      // logoutUser();
+     logoutUser();
     }
 
     clearAlert();
+  };
+
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
   return (
@@ -309,6 +329,8 @@ const AppProvider = ({ children }) => {
         getJobs,
         editJob,
         showStats,
+        clearFilters,
+        changePage,
       }}
     >
       {children}
